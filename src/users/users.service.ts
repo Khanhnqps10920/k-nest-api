@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { FlexibleObject, jsonResponseParsed, utils } from 'src/common/utils';
+import { FlexibleObject, jsonResponseParsed, utils } from '../common/utils';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IUser, User, UserRole } from './entities/user.entity';
 import { Repository } from 'typeorm';

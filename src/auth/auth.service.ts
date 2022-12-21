@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { FlexibleObject } from 'src/common/utils';
+import { FlexibleObject } from '../common/utils';
 import { IUser } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
