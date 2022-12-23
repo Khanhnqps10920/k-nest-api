@@ -8,6 +8,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UsersModule } from './users/users.module';
         database: configService.get('DB_NAME'),
         entities: [join(__dirname, '**', '*.entity.{ts,js}')],
         synchronize: true,
+        logging: true,
       }),
       inject: [ConfigService],
     }),
@@ -30,6 +32,7 @@ import { UsersModule } from './users/users.module';
     CategoriesModule,
     UsersModule,
     AuthModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

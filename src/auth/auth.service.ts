@@ -20,8 +20,6 @@ export class AuthService {
     };
     const user = await this.usersService.findOneByCond(cond);
 
-    console.log(user);
-
     if (user) {
       const isMatch = await bcrypt.compare(password, user.password);
 

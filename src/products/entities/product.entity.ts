@@ -25,7 +25,9 @@ export class Product {
   @Column('int', { width: 200 })
   quantity: number;
 
-  @ManyToMany(() => Category)
+  @ManyToMany(() => Category, {
+    onDelete: 'CASCADE',
+  })
   @JoinTable()
   categories: Category[];
 }
