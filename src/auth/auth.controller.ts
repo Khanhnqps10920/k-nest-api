@@ -12,7 +12,7 @@ export class AuthController {
   async login(@Request() req) {
     return this.authService.login(req.user);
   }
-x
+
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async getProfile(@Request() req) {

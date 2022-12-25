@@ -9,11 +9,13 @@ import {
   HttpException,
   HttpStatus,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { FindProductsDto } from './dto/find-products.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -26,9 +28,9 @@ export class ProductsController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query() query: FindProductsDto) {
     try {
-      return this.productsService.findAll();
+      return this.productsService.findAll(query);
     } catch (e) {
       throw new HttpException(
         {
