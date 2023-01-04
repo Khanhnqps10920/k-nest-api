@@ -1,3 +1,6 @@
+import { MethodNotAllowedException } from '@nestjs/common';
+import { Request } from 'express';
+
 export interface FlexibleObject {
   [key: string]: any;
 }
@@ -29,3 +32,13 @@ export enum Sort {
   DESC = 'DESC',
   ASC = 'ASC',
 }
+
+export const imageFilter = (
+  req: Request,
+  file: Express.Multer.File,
+  callback: (error: Error, acceptFile: boolean) => void,
+) => {
+  if (!Boolean(file.mimetype.match(/(jpg|jpeg|png|gif)/)))
+    callback(new Error('Some file doesnt match file type'), false);
+  callback(null, true);
+};

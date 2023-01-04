@@ -1,4 +1,5 @@
 import { Category } from 'src/categories/entities/category.entity';
+import { Image } from 'src/images/entities/images.entity';
 
 import {
   Entity,
@@ -8,6 +9,9 @@ import {
   ManyToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -18,10 +22,11 @@ export class Product {
   @Column()
   title: string;
 
-  @Column('varchar', { length: 500 })
-  imgUrl: string;
+  @OneToOne(() => Image, { nullable: true })
+  @JoinColumn()
+  mainImg: Image;
 
-  @Column('varchar', { length: 500 })
+  @Column('varchar', { length: 500, nullable: true })
   description: string;
 
   @Column('int', { width: 200, default: 0 })
@@ -29,6 +34,9 @@ export class Product {
 
   @Column('int', { width: 200, default: null, nullable: true })
   price: number;
+
+  @OneToMany(() => Image, (image) => image.product)
+  images: Image[];
 
   @ManyToMany(() => Category, {
     onDelete: 'CASCADE',

@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { IUser, User, UserRole } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { RegisterDto } from 'src/auth/dto/register.dto';
 
 @Injectable()
 export class UsersService {
@@ -13,8 +14,40 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(body: RegisterDto) {
+    const checkExist = await this.userRepository.findOne({
+      where: {
+        email: body.email,
+      },
+    });
+
+    if (checkExist) {
+      throw new HttpException(
+        'Email already in use, please use another email',
+        401,
+      );
+    }
+
+    const bodyData: IUser = {
+      ...body,
+      role: UserRole.CUSTOMER,
+    };
+
+    const hashedPassword = await bcrypt.hash(bodyData.password, utils.SALT);
+
+    if (hashedPassword) {
+      bodyData.password = hashedPassword;
+    }
+
+    const newUser = await this.userRepository.save(bodyData);
+
+    if (!newUser) {
+      throw new HttpException('Register failed, please try again', 401);
+    }
+
+    const { password: _, ...rest } = newUser;
+
+    return rest;
   }
 
   findAll() {

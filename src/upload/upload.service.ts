@@ -4,9 +4,11 @@ import { UpdateUploadDto } from './dto/update-upload.dto';
 import { S3 } from 'aws-sdk';
 import { config } from '../common/utils';
 import { uuid } from 'uuidv4';
+import { ImageService } from 'src/images/images.service';
 
 @Injectable()
 export class UploadService {
+  constructor(private imageService: ImageService) {}
   create(createUploadDto: CreateUploadDto) {
     return 'This action adds a new upload';
   }
@@ -57,5 +59,21 @@ export class UploadService {
       console.log('uploadS3: ', e);
       throw new HttpException('Upload failed', 400);
     }
+  }
+
+  async uploadMultipleFiles(files: Express.Multer.File[]) {
+    const promiseArr = [];
+
+    for (const file of files) {
+      const promise = this.uploadS3(file, 'image');
+
+      promiseArr.push(promise);
+    }
+
+    const arrResolved: string[] = await Promise.all(promiseArr);
+
+    const images = await this.imageService.insertMany(arrResolved);
+
+    return images;
   }
 }

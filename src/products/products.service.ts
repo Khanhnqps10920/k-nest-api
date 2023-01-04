@@ -1,14 +1,13 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Like, Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
-import { FindProductsDto, ProductSortByEnum } from './dto/find-products.dto';
+import { FindProductsDto } from './dto/find-products.dto';
 import {
   DEFAULT_LIMIT,
   DEFAULT_PAGE,
-  Sort,
   jsonResponseParsed,
 } from '../common/utils';
 
@@ -21,11 +20,13 @@ export class ProductsService {
 
   async create(createProductDto: CreateProductDto) {
     try {
+      console.log('create product palyoad, ', createProductDto);
       const newProduct = await this.productRepository.save(createProductDto);
 
       return newProduct;
     } catch (e) {
       console.log('product create: ', e);
+      return jsonResponseParsed(401, {}, 'Something went wrong');
     }
   }
 
@@ -55,7 +56,7 @@ export class ProductsService {
       where: condition,
       take: limit,
       skip: (page - 1) * limit,
-      relations: ['categories'],
+      relations: ['categories', 'mainImg'],
       order: {
         id: 'DESC',
       },

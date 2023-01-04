@@ -7,6 +7,7 @@ import { LocalStrategy } from './auth.local.strategy';
 import { UsersModule } from 'src/users/users.module';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.stategy';
+import { User } from 'src/users/entities/user.entity';
 @Module({
   imports: [
     JwtModule.register({
@@ -15,6 +16,7 @@ import { JwtStrategy } from './jwt.stategy';
     }),
     PassportModule,
     UsersModule,
+    User,
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],

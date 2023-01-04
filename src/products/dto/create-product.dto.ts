@@ -1,5 +1,6 @@
 import { Category } from 'src/categories/entities/category.entity';
-import { IsNotEmpty, MinLength } from 'class-validator';
+import { IsArray, IsNotEmpty, MinLength } from 'class-validator';
+import { Image } from 'src/images/entities/images.entity';
 
 export class CreateProductDto {
   @IsNotEmpty()
@@ -7,13 +8,14 @@ export class CreateProductDto {
   title: string;
 
   @IsNotEmpty()
-  imgUrl: string;
+  mainImg: Image;
 
   description: string;
 
   @IsNotEmpty()
   quantity: number;
 
+  @IsArray()
   categories: Category[];
 
   @IsNotEmpty()

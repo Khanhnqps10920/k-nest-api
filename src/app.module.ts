@@ -9,6 +9,7 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { UploadModule } from './upload/upload.module';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { UploadModule } from './upload/upload.module';
     UsersModule,
     AuthModule,
     UploadModule,
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
